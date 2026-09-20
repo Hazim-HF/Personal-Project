@@ -1,0 +1,323 @@
+// Prisma schema for the shared API gateway (services/api).
+// This gateway handles auth for all apps (finance, wedding, vehicle-tracker, ...).
+// Models below are grouped into:
+//   1. Core / Auth      - shared by every app behind this gateway
+//   2. Finance Tracker  - domain models for finance.hazimfitri.com
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Prisma 7 no longer reads the connection string from this file: Prisma
+// Client needs a driver adapter (see prisma/client.js), and the CLI
+// (migrate/studio) reads DATABASE_URL from prisma7.config.ts instead.
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// 1. Core / Auth
+// ============================================================
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  refreshTokens         RefreshToken[]
+  accounts              Account[]
+  categories            Category[]
+  transactions          Transaction[]
+  recurringTransactions RecurringTransaction[]
+  budgets               Budget[]
+  savingsGoals          SavingsGoal[]
+  investments           Investment[]
+
+  @@map("users")
+}
+
+// Enables persistent login + server-side revocation (logout, "sign out everywhere").
+model RefreshToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  token     String    @unique
+  userId    String    @db.Uuid
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+// ============================================================
+// 2. Finance Tracker domain
+// ============================================================
+
+enum AccountType {
+  CHECKING
+  SAVINGS
+  CASH
+  CREDIT_CARD
+  INVESTMENT
+  LOAN
+  OTHER
+}
+
+// A wallet/bank/card/investment account. `balance` is a cached running total
+// kept in sync by the application whenever a Transaction is written; the
+// Transaction ledger itself remains the source of truth and can always be
+// summed to reconcile it.
+model Account {
+  id          String      @id @default(uuid()) @db.Uuid
+  userId      String      @db.Uuid
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  type        AccountType
+  institution String?
+  currency    String      @default("MYR")
+  balance     Decimal     @default(0) @db.Decimal(14, 2)
+  isArchived  Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  transactions          Transaction[]          @relation("AccountTransactions")
+  incomingTransfers     Transaction[]          @relation("TransferDestinationAccount")
+  recurringTransactions RecurringTransaction[]
+  savingsGoals          SavingsGoal[]
+  investments           Investment[]
+
+  @@index([userId])
+  @@map("accounts")
+}
+
+enum CategoryType {
+  INCOME
+  EXPENSE
+}
+
+// userId is nullable so the app can ship a set of shared default categories
+// (userId = null) alongside categories a user creates for themselves.
+model Category {
+  id        String       @id @default(uuid()) @db.Uuid
+  userId    String?      @db.Uuid
+  user      User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  type      CategoryType
+  icon      String?
+  color     String?
+  parentId  String?      @db.Uuid
+  parent    Category?    @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children  Category[]   @relation("CategoryHierarchy")
+  isDefault Boolean      @default(false)
+  createdAt DateTime     @default(now())
+
+  transactions          Transaction[]
+  recurringTransactions RecurringTransaction[]
+  budgets               Budget[]
+
+  @@index([userId])
+  @@map("categories")
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
+model Transaction {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accountId String  @db.Uuid
+  account   Account @relation("AccountTransactions", fields: [accountId], references: [id], onDelete: Cascade)
+
+  // Only set when type = TRANSFER: the account that received the money.
+  transferAccountId String?  @db.Uuid
+  transferAccount   Account? @relation("TransferDestinationAccount", fields: [transferAccountId], references: [id])
+
+  categoryId String?   @db.Uuid
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  type        TransactionType
+  amount      Decimal         @db.Decimal(14, 2)
+  currency    String          @default("MYR")
+  description String?
+  merchant    String?
+  date        DateTime
+  receiptUrl  String?
+
+  recurringTransactionId String?               @db.Uuid
+  recurringTransaction   RecurringTransaction? @relation(fields: [recurringTransactionId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, date])
+  @@index([accountId, date])
+  @@index([categoryId])
+  @@map("transactions")
+}
+
+enum RecurrenceFrequency {
+  DAILY
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+  YEARLY
+}
+
+// Covers both bills (rent, utilities) and subscriptions, plus recurring
+// income (salary). Generated Transactions link back via recurringTransactionId.
+enum RecurringKind {
+  BILL
+  SUBSCRIPTION
+  INCOME
+}
+
+model RecurringTransaction {
+  id String @id @default(uuid()) @db.Uuid
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accountId String  @db.Uuid
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  categoryId String?   @db.Uuid
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  kind        RecurringKind
+  name        String
+  amount      Decimal             @db.Decimal(14, 2)
+  frequency   RecurrenceFrequency
+  interval    Int                 @default(1)
+  startDate   DateTime
+  nextDueDate DateTime
+  endDate     DateTime?
+  isActive    Boolean             @default(true)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  transactions Transaction[]
+
+  @@index([userId, nextDueDate])
+  @@map("recurring_transactions")
+}
+
+enum BudgetPeriod {
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+model Budget {
+  id String @id @default(uuid()) @db.Uuid
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // null = overall budget across every category
+  categoryId String?   @db.Uuid
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  name      String
+  amount    Decimal      @db.Decimal(14, 2)
+  period    BudgetPeriod @default(MONTHLY)
+  startDate DateTime
+  endDate   DateTime?
+  rollover  Boolean      @default(false)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@index([userId, period])
+  @@map("budgets")
+}
+
+enum GoalStatus {
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+}
+
+model SavingsGoal {
+  id String @id @default(uuid()) @db.Uuid
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Optional account this goal's money actually sits in.
+  accountId String?  @db.Uuid
+  account   Account? @relation(fields: [accountId], references: [id])
+
+  name          String
+  targetAmount  Decimal    @db.Decimal(14, 2)
+  currentAmount Decimal    @default(0) @db.Decimal(14, 2)
+  targetDate    DateTime?
+  icon          String?
+  color         String?
+  status        GoalStatus @default(ACTIVE)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([userId, status])
+  @@map("savings_goals")
+}
+
+enum InvestmentType {
+  STOCK
+  CRYPTO
+  UNIT_TRUST
+  ETF
+  BOND
+  OTHER
+}
+
+model Investment {
+  id String @id @default(uuid()) @db.Uuid
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accountId String?  @db.Uuid
+  account   Account? @relation(fields: [accountId], references: [id])
+
+  type         InvestmentType
+  symbol       String?
+  name         String
+  quantity     Decimal        @db.Decimal(18, 6)
+  avgCost      Decimal        @db.Decimal(14, 4)
+  currentPrice Decimal?       @db.Decimal(14, 4)
+  currency     String         @default("MYR")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  valuationHistory InvestmentValuation[]
+
+  @@index([userId])
+  @@map("investments")
+}
+
+// Daily/periodic price snapshots so the frontend can chart portfolio value
+// over time without recomputing from external price feeds each time.
+model InvestmentValuation {
+  id           String     @id @default(uuid()) @db.Uuid
+  investmentId String     @db.Uuid
+  investment   Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+  price        Decimal    @db.Decimal(14, 4)
+  recordedAt   DateTime   @default(now())
+
+  @@index([investmentId, recordedAt])
+  @@map("investment_valuations")
+}

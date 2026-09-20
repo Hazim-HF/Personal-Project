@@ -23,6 +23,9 @@ export default function HomePage() {
             <a href="#work" className="transition hover:text-white">
               Work
             </a>
+            <a href="#apps" className="transition hover:text-white">
+              Apps
+            </a>
             <a href="#skills" className="transition hover:text-white">
               Skills
             </a>
@@ -186,6 +189,61 @@ export default function HomePage() {
               <div className="mb-4 h-44 rounded-[22px] bg-gradient-to-br from-white/10 to-white/5" />
               <h3 className="text-xl font-semibold">{item.title}</h3>
               <p className="mt-3 leading-7 text-white/60">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Apps */}
+      <section id="apps" className="mx-auto max-w-7xl px-6 py-10 lg:px-10">
+        <div className="mb-8">
+          <p className="mb-3 text-sm uppercase tracking-[0.2em] text-fuchsia-300">
+            Live Apps
+          </p>
+          <h2 className="text-3xl font-semibold sm:text-4xl">
+            Explore the products I&apos;ve built
+          </h2>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {[
+            {
+              title: "Finance Tracker",
+              desc: "Track spending, budgets, and savings goals in one clean dashboard.",
+              href: "https://finance.hazimfitri.com",
+              gradient: "from-cyan-400 to-violet-500",
+            },
+            {
+              title: "E-Invitation",
+              desc: "Beautiful digital invitations for events, shared with a single link.",
+              href: "https://wedding.hazimfitri.com",
+              gradient: "from-pink-400 to-fuchsia-500",
+            },
+            {
+              title: "Vehicle Tracker",
+              desc: "Log service history, mileage, and maintenance reminders for every vehicle.",
+              href: "https://vehicle.hazimfitri.com",
+              gradient: "from-amber-400 to-emerald-500",
+            },
+          ].map((app) => (
+            <div
+              key={app.title}
+              className="group flex flex-col rounded-[28px] border border-white/10 bg-white/5 p-6 transition hover:-translate-y-1 hover:bg-white/8"
+            >
+              <div
+                className={`mb-4 h-44 rounded-[22px] bg-gradient-to-br ${app.gradient} opacity-80`}
+              />
+              <h3 className="text-xl font-semibold">{app.title}</h3>
+              <p className="mt-3 flex-1 leading-7 text-white/60">{app.desc}</p>
+              <a
+                href={app.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition hover:scale-[1.02]"
+              >
+                Visit Site
+                <span aria-hidden="true">→</span>
+              </a>
             </div>
           ))}
         </div>

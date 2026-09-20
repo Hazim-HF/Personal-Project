@@ -10,7 +10,7 @@ finance.hazimfitri.com
 
 
 
-invite.hazimfitri.com
+wedding.hazimfitri.com
 
 
 
