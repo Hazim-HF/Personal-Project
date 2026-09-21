@@ -48,9 +48,13 @@ export default function FinanceTrackerMainPage() {
         <div className="relative mx-auto max-w-7xl px-6 py-8 lg:px-8">
           <header className="flex items-center justify-between rounded-full border border-white/10 bg-white/5 px-5 py-3 backdrop-blur-md">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 to-violet-500 text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/20">
-                FT
-              </div>
+              <a
+                href="https://portfolio.hazimfitri.com"
+                className="text-lg font-semibold tracking-wide text-white transition hover:text-cyan-300"
+              >
+                Hazim<span className="text-fuchsia-400">.</span>
+              </a>
+              <div className="h-6 w-px bg-white/15" />
               <div>
                 <p className="text-sm font-semibold tracking-wide text-white">Finance Tracker</p>
                 <p className="text-xs text-slate-400">Personal wealth, simplified</p>
