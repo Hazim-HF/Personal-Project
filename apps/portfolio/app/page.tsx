@@ -1,16 +1,16 @@
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-neutral-950 text-white">
+    <main className="min-h-screen bg-slate-950 text-white">
       {/* Background */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-fuchsia-500/20 blur-3xl" />
-        <div className="absolute right-0 top-40 h-[400px] w-[400px] rounded-full bg-cyan-500/10 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-[350px] w-[350px] rounded-full bg-indigo-500/10 blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-cyan-500/20 blur-3xl" />
+        <div className="absolute right-0 top-40 h-[400px] w-[400px] rounded-full bg-violet-500/15 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-[350px] w-[350px] rounded-full bg-violet-500/10 blur-3xl" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_35%)]" />
       </div>
 
       {/* Navbar */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-neutral-950/70 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/70 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
           <div className="text-lg font-semibold tracking-wide">
             Hazim<span className="text-fuchsia-400">.</span>
@@ -36,7 +36,7 @@ export default function HomePage() {
 
           <a
             href="#contact"
-            className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-black"
+            className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium transition hover:bg-white hover:text-slate-950"
           >
             Let&apos;s Talk
           </a>
@@ -46,13 +46,13 @@ export default function HomePage() {
       {/* Hero */}
       <section className="mx-auto grid min-h-[calc(100vh-80px)] max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-2 lg:px-10">
         <div>
-          <p className="mb-4 inline-flex rounded-full border border-fuchsia-400/30 bg-fuchsia-400/10 px-4 py-1 text-sm text-fuchsia-300">
+          <p className="mb-4 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-1 text-sm text-cyan-300">
             Data • Tech • Business
           </p>
 
           <h1 className="max-w-3xl text-5xl font-bold leading-tight tracking-tight sm:text-6xl lg:text-7xl">
             Building digital solutions with
-            <span className="bg-gradient-to-r from-fuchsia-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-cyan-400 to-violet-500 bg-clip-text text-transparent">
               {" "}
               clarity, data, and design
             </span>
@@ -66,7 +66,7 @@ export default function HomePage() {
           <div className="mt-8 flex flex-wrap gap-4">
             <a
               href="#work"
-              className="rounded-full bg-white px-6 py-3 font-medium text-black transition hover:scale-[1.02]"
+              className="rounded-full bg-white px-6 py-3 font-medium text-slate-950 transition hover:scale-[1.02]"
             >
               View My Work
             </a>
@@ -90,13 +90,13 @@ export default function HomePage() {
         {/* Right card */}
         <div className="relative">
           <div className="rounded-[32px] border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl">
-            <div className="rounded-[24px] border border-white/10 bg-neutral-900 p-6">
+            <div className="rounded-[24px] border border-white/10 bg-slate-900 p-6">
               <div className="mb-6 flex items-center justify-between">
                 <div>
                   <p className="text-sm text-white/50">Personal Brand</p>
                   <h2 className="text-2xl font-semibold">Portfolio Dashboard</h2>
                 </div>
-                <div className="rounded-2xl bg-gradient-to-br from-fuchsia-500 to-cyan-500 px-4 py-2 text-sm font-semibold text-white">
+                <div className="rounded-2xl bg-gradient-to-br from-cyan-400 to-violet-500 px-4 py-2 text-sm font-semibold text-slate-950">
                   Available
                 </div>
               </div>
@@ -139,7 +139,7 @@ export default function HomePage() {
       <section id="about" className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
         <div className="grid gap-8 lg:grid-cols-2">
           <div>
-            <p className="mb-3 text-sm uppercase tracking-[0.2em] text-fuchsia-300">
+            <p className="mb-3 text-sm uppercase tracking-[0.2em] text-cyan-300">
               About Me
             </p>
             <h2 className="text-3xl font-semibold sm:text-4xl">
@@ -197,7 +197,7 @@ export default function HomePage() {
       {/* Apps */}
       <section id="apps" className="mx-auto max-w-7xl px-6 py-10 lg:px-10">
         <div className="mb-8">
-          <p className="mb-3 text-sm uppercase tracking-[0.2em] text-fuchsia-300">
+          <p className="mb-3 text-sm uppercase tracking-[0.2em] text-cyan-300">
             Live Apps
           </p>
           <h2 className="text-3xl font-semibold sm:text-4xl">
@@ -223,7 +223,7 @@ export default function HomePage() {
               title: "Vehicle Tracker",
               desc: "Log service history, mileage, and maintenance reminders for every vehicle.",
               href: "https://vehicle.hazimfitri.com",
-              gradient: "from-amber-400 to-emerald-500",
+              gradient: "from-cyan-400 to-violet-500",
             },
           ].map((app) => (
             <div
@@ -239,7 +239,7 @@ export default function HomePage() {
                 href={app.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition hover:scale-[1.02]"
+                className="mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-slate-950 transition hover:scale-[1.02]"
               >
                 Visit Site
                 <span aria-hidden="true">→</span>
@@ -252,7 +252,7 @@ export default function HomePage() {
       {/* Skills */}
       <section id="skills" className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
         <div className="rounded-[32px] border border-white/10 bg-white/5 p-8">
-          <p className="mb-3 text-sm uppercase tracking-[0.2em] text-purple-300">
+          <p className="mb-3 text-sm uppercase tracking-[0.2em] text-violet-300">
             Core Skills
           </p>
 
@@ -282,7 +282,7 @@ export default function HomePage() {
 
       {/* Contact */}
       <section id="contact" className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
-        <div className="rounded-[32px] border border-white/10 bg-gradient-to-br from-fuchsia-500/10 via-white/5 to-cyan-500/10 p-10 text-center">
+        <div className="rounded-[32px] border border-white/10 bg-gradient-to-br from-cyan-500/10 via-white/5 to-violet-500/10 p-10 text-center">
           <p className="mb-3 text-sm uppercase tracking-[0.2em] text-white/60">
             Contact
           </p>
@@ -297,7 +297,7 @@ export default function HomePage() {
           <div className="mt-8 flex justify-center gap-4">
             <a
               href="mailto:hazim.fitri.hf@gmail.com"
-              className="rounded-full bg-white px-6 py-3 font-medium text-black"
+              className="rounded-full bg-white px-6 py-3 font-medium text-slate-950"
             >
               Email Me
             </a>

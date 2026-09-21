@@ -13,6 +13,7 @@ import {
   type Category,
   type TransactionType,
 } from "@/lib/api";
+import AppNav from "@/app/components/AppNav";
 
 const TODAY = new Date().toISOString().slice(0, 10);
 
@@ -83,9 +84,14 @@ export default function NewTransactionPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-950 px-6 py-10 text-white lg:px-8">
+    <main className="min-h-screen bg-slate-950 px-6 py-8 text-white lg:px-8">
       <div className="mx-auto max-w-xl">
-        <Link href="/transactions" className="text-sm text-slate-400 transition hover:text-white">
+        <AppNav />
+
+        <Link
+          href="/transactions"
+          className="mt-8 inline-block text-sm text-slate-400 transition hover:text-white"
+        >
           ← Back to transactions
         </Link>
         <h1 className="mb-8 mt-1 text-2xl font-semibold">Add Transaction</h1>

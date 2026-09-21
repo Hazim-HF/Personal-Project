@@ -49,14 +49,14 @@ export default function VehicleMaintenanceTrackerMainPage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,146,60,0.18),transparent_30%),radial-gradient(circle_at_left,rgba(16,185,129,0.14),transparent_35%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.18),transparent_30%),radial-gradient(circle_at_left,rgba(168,85,247,0.16),transparent_35%)]" />
 
         <div className="relative mx-auto max-w-7xl px-6 py-8 lg:px-8">
           <header className="flex items-center justify-between rounded-full border border-white/10 bg-white/5 px-5 py-3 backdrop-blur-md">
             <div className="flex items-center gap-3">
               <a
                 href="https://portfolio.hazimfitri.com"
-                className="text-lg font-semibold tracking-wide text-white transition hover:text-amber-300"
+                className="text-lg font-semibold tracking-wide text-white transition hover:text-cyan-300"
               >
                 Hazim<span className="text-fuchsia-400">.</span>
               </a>
@@ -85,7 +85,7 @@ export default function VehicleMaintenanceTrackerMainPage() {
 
           <div className="grid items-center gap-14 py-16 lg:grid-cols-2 lg:py-24">
             <div>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-400/20 bg-amber-400/10 px-4 py-2 text-xs font-medium text-amber-300">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-medium text-cyan-300">
                 Smarter vehicle maintenance management
               </div>
 
@@ -98,7 +98,7 @@ export default function VehicleMaintenanceTrackerMainPage() {
               </p>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                <button className="rounded-2xl bg-gradient-to-r from-amber-400 to-emerald-500 px-6 py-3 font-semibold text-slate-950 shadow-xl shadow-amber-500/20 transition hover:scale-[1.02]">
+                <button className="rounded-2xl bg-gradient-to-r from-cyan-400 to-violet-500 px-6 py-3 font-semibold text-slate-950 shadow-xl shadow-cyan-500/20 transition hover:scale-[1.02]">
                   Start Tracking Now
                 </button>
                 <button className="rounded-2xl border border-white/10 bg-white/5 px-6 py-3 font-medium text-white backdrop-blur transition hover:bg-white/10">
@@ -121,7 +121,7 @@ export default function VehicleMaintenanceTrackerMainPage() {
             </div>
 
             <div className="relative" id="overview">
-              <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-amber-400/20 to-emerald-500/20 blur-2xl" />
+              <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-cyan-400/20 to-violet-500/20 blur-2xl" />
               <div className="relative rounded-[2rem] border border-white/10 bg-white/8 p-5 shadow-2xl backdrop-blur-xl">
                 <div className="mb-5 flex items-center justify-between">
                   <div>
@@ -160,14 +160,14 @@ export default function VehicleMaintenanceTrackerMainPage() {
                         <p className="text-sm text-slate-400">Maintenance Spend</p>
                         <h3 className="text-lg font-semibold text-white">Last 6 Months</h3>
                       </div>
-                      <span className="text-sm text-amber-300">Updated today</span>
+                      <span className="text-sm text-cyan-300">Updated today</span>
                     </div>
 
                     <div className="flex h-48 items-end gap-3">
                       {[52, 30, 68, 41, 57, 35].map((height, i) => (
                         <div key={i} className="flex flex-1 flex-col items-center gap-2">
                           <div
-                            className="w-full rounded-t-2xl bg-gradient-to-t from-amber-400 to-emerald-500"
+                            className="w-full rounded-t-2xl bg-gradient-to-t from-cyan-400 to-violet-500"
                             style={{ height: `${height}%` }}
                           />
                           <span className="text-xs text-slate-500">
@@ -204,7 +204,7 @@ export default function VehicleMaintenanceTrackerMainPage() {
 
       <section id="features" className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-24">
         <div className="mb-12 max-w-2xl">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-amber-300">Features</p>
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-cyan-300">Features</p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
             Built for reliability, upkeep, and smarter ownership decisions.
           </h2>
@@ -216,7 +216,7 @@ export default function VehicleMaintenanceTrackerMainPage() {
               key={feature.title}
               className="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-md transition hover:-translate-y-1 hover:bg-white/7"
             >
-              <div className="mb-5 h-12 w-12 rounded-2xl bg-gradient-to-br from-amber-400/20 to-emerald-500/20" />
+              <div className="mb-5 h-12 w-12 rounded-2xl bg-gradient-to-br from-cyan-400/20 to-violet-500/20" />
               <h3 className="text-xl font-semibold text-white">{feature.title}</h3>
               <p className="mt-3 leading-7 text-slate-300">{feature.desc}</p>
             </div>
@@ -228,7 +228,7 @@ export default function VehicleMaintenanceTrackerMainPage() {
         <div className="rounded-[2rem] border border-white/10 bg-gradient-to-r from-white/8 to-white/5 p-8 backdrop-blur-xl lg:p-12">
           <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <div>
-              <p className="text-sm font-medium uppercase tracking-[0.2em] text-emerald-300">Start now</p>
+              <p className="text-sm font-medium uppercase tracking-[0.2em] text-violet-300">Start now</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
                 Your vehicles deserve more than a glovebox full of receipts.
               </h2>

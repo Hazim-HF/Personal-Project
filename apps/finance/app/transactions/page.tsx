@@ -8,10 +8,11 @@ import {
   getAccounts,
   getMe,
   getTransactions,
-  logout,
   type Account,
   type Transaction,
 } from "@/lib/api";
+import AppNav from "@/app/components/AppNav";
+import ExportMenu from "@/app/components/ExportMenu";
 
 function formatMoney(amount: string, currency: string) {
   const value = Number(amount);
@@ -50,36 +51,23 @@ export default function TransactionsPage() {
     load();
   }, [router]);
 
-  async function handleLogout() {
-    await logout();
-    router.push("/login");
-  }
-
   return (
-    <main className="min-h-screen bg-slate-950 px-6 py-10 text-white lg:px-8">
+    <main className="min-h-screen bg-slate-950 px-6 py-8 text-white lg:px-8">
       <div className="mx-auto max-w-5xl">
-        <header className="mb-8 flex items-center justify-between">
-          <div>
-            <Link href="/" className="text-sm text-slate-400 transition hover:text-white">
-              ← Finance Tracker
-            </Link>
-            <h1 className="mt-1 text-2xl font-semibold">Transactions</h1>
-          </div>
+        <AppNav />
+
+        <div className="mb-8 mt-8 flex flex-wrap items-center justify-between gap-4">
+          <h1 className="text-2xl font-semibold">Transactions</h1>
           <div className="flex items-center gap-3">
+            <ExportMenu transactions={transactions} />
             <Link
               href="/transactions/new"
               className="rounded-full bg-gradient-to-r from-cyan-400 to-violet-500 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:scale-[1.02]"
             >
               + Add Transaction
             </Link>
-            <button
-              onClick={handleLogout}
-              className="rounded-full border border-white/10 px-4 py-2.5 text-sm text-slate-300 transition hover:bg-white/10"
-            >
-              Sign Out
-            </button>
           </div>
-        </header>
+        </div>
 
         {loading && <p className="text-slate-400">Loading...</p>}
         {error && <p className="text-rose-400">{error}</p>}
