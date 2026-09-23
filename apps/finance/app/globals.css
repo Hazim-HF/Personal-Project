@@ -1,26 +1,55 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  color-scheme: dark;
+}
+
+/*
+ * Light mode. The UI is written dark-first (bg-slate-950, text-white, bg-white/5, …),
+ * so rather than adding variants to every class we mirror the palette: the slate
+ * scale and white swap ends, and accents shift to darker shades that stay legible
+ * on a light background.
+ */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --color-white: oklch(12.9% 0.042 264.695);
+  --color-slate-50: oklch(12.9% 0.042 264.695);
+  --color-slate-100: oklch(20.8% 0.042 265.755);
+  --color-slate-200: oklch(27.9% 0.041 260.031);
+  --color-slate-300: oklch(37.2% 0.044 257.287);
+  --color-slate-400: oklch(44.6% 0.043 257.281);
+  --color-slate-600: oklch(70.4% 0.04 256.788);
+  --color-slate-700: oklch(86.9% 0.022 252.894);
+  --color-slate-800: oklch(92.9% 0.013 255.508);
+  --color-slate-900: oklch(96.8% 0.007 247.896);
+  --color-slate-950: oklch(98.4% 0.003 247.858);
+
+  --color-cyan-200: oklch(45% 0.085 224.283);
+  --color-cyan-300: oklch(52% 0.105 223.128);
+  --color-cyan-400: oklch(60.9% 0.126 221.723);
+  --color-violet-300: oklch(49.1% 0.27 292.581);
+  --color-violet-400: oklch(54.1% 0.281 293.009);
+  --color-fuchsia-300: oklch(51.8% 0.253 323.949);
+  --color-fuchsia-400: oklch(59.1% 0.293 322.896);
+  --color-pink-400: oklch(59.2% 0.249 0.584);
+  --color-emerald-300: oklch(50.8% 0.118 165.612);
+  --color-emerald-400: oklch(59.6% 0.145 163.225);
+  --color-rose-300: oklch(51.4% 0.222 16.935);
+  --color-rose-400: oklch(58.6% 0.253 17.585);
+  --color-amber-300: oklch(55.5% 0.163 48.998);
+  --color-amber-400: oklch(66.6% 0.179 58.318);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--color-slate-950);
+  color: var(--color-white);
   font-family: Arial, Helvetica, sans-serif;
 }

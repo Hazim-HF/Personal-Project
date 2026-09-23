@@ -50,6 +50,7 @@ export type Account = {
   id: string;
   name: string;
   type: AccountType;
+  institution: string | null;
   currency: string;
   balance: string;
 };
@@ -103,6 +104,21 @@ export function logout() {
 
 export function getAccounts() {
   return apiFetch<{ accounts: Account[] }>("/api/accounts");
+}
+
+export type NewAccountInput = {
+  name: string;
+  type: AccountType;
+  institution?: string;
+  currency?: string;
+  balance?: string;
+};
+
+export function createAccount(input: NewAccountInput) {
+  return apiFetch<{ account: Account }>("/api/accounts", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
 }
 
 export function getCategories() {

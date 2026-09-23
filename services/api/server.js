@@ -13,6 +13,8 @@ const roleMiddleware = require("./middleware/roleMiddleware");
 const accountRoutes = require("./routes/accountRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
+const vehicleRoutes = require("./routes/vehicleRoutes");
+const serviceRecordRoutes = require("./routes/serviceRecordRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,9 +23,15 @@ const COOKIE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 app.use(express.json());
 app.use(cookieParser());
+// CLIENT_URL is a comma-separated list: every app front-end that talks to this gateway.
+const allowedOrigins = (process.env.CLIENT_URL || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: allowedOrigins,
     credentials: true,
   })
 );
@@ -141,6 +149,8 @@ app.get(
 app.use("/api/accounts", authMiddleware, accountRoutes);
 app.use("/api/categories", authMiddleware, categoryRoutes);
 app.use("/api/transactions", authMiddleware, transactionRoutes);
+app.use("/api/vehicles", authMiddleware, vehicleRoutes);
+app.use("/api/service-records", authMiddleware, serviceRecordRoutes);
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {

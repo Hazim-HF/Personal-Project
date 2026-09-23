@@ -6,8 +6,7 @@ import { logout } from "@/lib/api";
 
 const NAV_LINKS = [
   { href: "/dashboard", label: "Dashboard" },
-  { href: "/transactions", label: "Transactions" },
-  { href: "/accounts", label: "Accounts" },
+  { href: "/services", label: "Services" },
 ];
 
 export default function AppNav() {
@@ -30,8 +29,8 @@ export default function AppNav() {
         </a>
         <div className="h-6 w-px bg-white/15" />
         <div>
-          <p className="text-sm font-semibold tracking-wide text-white">Finance Tracker</p>
-          <p className="text-xs text-slate-400">Personal wealth, simplified</p>
+          <p className="text-sm font-semibold tracking-wide text-white">AutoTrack</p>
+          <p className="text-xs text-slate-400">Vehicle maintenance, simplified</p>
         </div>
       </div>
 

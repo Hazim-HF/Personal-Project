@@ -3,6 +3,7 @@
 // Models below are grouped into:
 //   1. Core / Auth      - shared by every app behind this gateway
 //   2. Finance Tracker  - domain models for finance.hazimfitri.com
+//   3. Vehicle Tracker  - domain models for vehicle.hazimfitri.com
 
 generator client {
   provider = "prisma-client-js"
@@ -41,6 +42,8 @@ model User {
   budgets               Budget[]
   savingsGoals          SavingsGoal[]
   investments           Investment[]
+  vehicles              Vehicle[]
+  serviceRecords        ServiceRecord[]
 
   @@map("users")
 }
@@ -320,4 +323,77 @@ model InvestmentValuation {
 
   @@index([investmentId, recordedAt])
   @@map("investment_valuations")
+}
+
+// ============================================================
+// 3. Vehicle Tracker domain
+// ============================================================
+
+enum VehicleType {
+  CAR
+  MOTORCYCLE
+  TRUCK
+  VAN
+  OTHER
+}
+
+model Vehicle {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name        String
+  type        VehicleType
+  make        String?
+  model       String?
+  year        Int?
+  plateNumber String?
+  // Latest known odometer reading in km; bumped whenever a service is logged at a higher mileage.
+  mileage     Int         @default(0)
+  isArchived  Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  serviceRecords ServiceRecord[]
+
+  @@index([userId])
+  @@map("vehicles")
+}
+
+enum ServiceCategory {
+  OIL_CHANGE
+  TIRES
+  BRAKES
+  BATTERY
+  INSPECTION
+  REPAIR
+  OTHER
+}
+
+// One maintenance job done on a vehicle. nextDueDate / nextDueMileage drive the
+// "upcoming maintenance" reminders.
+model ServiceRecord {
+  id String @id @default(uuid()) @db.Uuid
+
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  vehicleId String  @db.Uuid
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  category       ServiceCategory
+  title          String
+  date           DateTime
+  mileage        Int
+  cost           Decimal         @default(0) @db.Decimal(12, 2)
+  workshop       String?
+  notes          String?
+  nextDueDate    DateTime?
+  nextDueMileage Int?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@index([userId, date])
+  @@index([vehicleId, date])
+  @@map("service_records")
 }
