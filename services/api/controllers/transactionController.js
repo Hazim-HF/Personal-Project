@@ -9,11 +9,12 @@ const includeRelations = {
 };
 
 async function listTransactions(req, res) {
+  // The list page shows the latest 100; analytics passes ?limit=all for the full history.
   const transactions = await prisma.transaction.findMany({
     where: { userId: req.user.id },
     include: includeRelations,
     orderBy: { date: "desc" },
-    take: 100,
+    ...(req.query.limit === "all" ? {} : { take: 100 }),
   });
 
   res.json({ transactions });
@@ -116,4 +117,47 @@ async function createTransaction(req, res) {
   res.status(201).json({ transaction });
 }
 
-module.exports = { listTransactions, createTransaction, TRANSACTION_TYPES };
+// Only the category can be changed for now. It doesn't move money, so account
+// balances are untouched.
+async function updateTransaction(req, res) {
+  const { categoryId } = req.body;
+
+  if (categoryId === undefined) {
+    return res.status(400).json({ message: "categoryId is required (use null to clear it)" });
+  }
+
+  const existing = await prisma.transaction.findFirst({
+    where: { id: req.params.id, userId: req.user.id },
+  });
+  if (!existing) {
+    return res.status(404).json({ message: "Transaction not found" });
+  }
+
+  if (categoryId !== null) {
+    if (existing.type === "TRANSFER") {
+      return res.status(400).json({ message: "Transfers can't have a category" });
+    }
+
+    const category = await prisma.category.findFirst({
+      where: { id: categoryId, OR: [{ userId: null }, { userId: req.user.id }] },
+    });
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+    if (category.type !== existing.type) {
+      return res
+        .status(400)
+        .json({ message: `Category must be an ${existing.type} category` });
+    }
+  }
+
+  const transaction = await prisma.transaction.update({
+    where: { id: existing.id },
+    data: { categoryId },
+    include: includeRelations,
+  });
+
+  res.json({ transaction });
+}
+
+module.exports = { listTransactions, createTransaction, updateTransaction, TRANSACTION_TYPES };

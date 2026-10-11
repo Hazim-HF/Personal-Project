@@ -14,6 +14,7 @@ const roleMiddleware = require("./middleware/roleMiddleware");
 const accountRoutes = require("./routes/accountRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
+const budgetRoutes = require("./routes/budgetRoutes");
 const vehicleRoutes = require("./routes/vehicleRoutes");
 const serviceRecordRoutes = require("./routes/serviceRecordRoutes");
 const { sendEmail } = require("./lib/mailer");
@@ -262,6 +263,7 @@ app.get(
 app.use("/api/accounts", authMiddleware, accountRoutes);
 app.use("/api/categories", authMiddleware, categoryRoutes);
 app.use("/api/transactions", authMiddleware, transactionRoutes);
+app.use("/api/budgets", authMiddleware, budgetRoutes);
 app.use("/api/vehicles", authMiddleware, vehicleRoutes);
 app.use("/api/service-records", authMiddleware, serviceRecordRoutes);
 

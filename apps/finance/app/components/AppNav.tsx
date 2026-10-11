@@ -7,6 +7,7 @@ import { logout } from "@/lib/api";
 const NAV_LINKS = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/transactions", label: "Transactions" },
+  { href: "/budgets", label: "Budgets" },
   { href: "/accounts", label: "Accounts" },
 ];
 
