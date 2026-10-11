@@ -98,6 +98,20 @@ export function register(name: string, email: string, password: string) {
   });
 }
 
+export function forgotPassword(email: string) {
+  return apiFetch<{ message: string }>("/api/forgot-password", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+}
+
+export function resetPassword(token: string, password: string) {
+  return apiFetch<{ message: string }>("/api/reset-password", {
+    method: "POST",
+    body: JSON.stringify({ token, password }),
+  });
+}
+
 export function logout() {
   return apiFetch<{ message: string }>("/api/logout", { method: "POST" });
 }

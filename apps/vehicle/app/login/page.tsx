@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ApiError, login, register } from "@/lib/api";
 
@@ -104,6 +105,14 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-2.5 text-sm text-white outline-none focus:border-cyan-400/50"
             />
+            {mode === "login" && (
+              <Link
+                href="/forgot-password"
+                className="mt-2 inline-block text-xs text-slate-400 hover:text-white"
+              >
+                Forgot password?
+              </Link>
+            )}
           </div>
 
           {error && <p className="text-sm text-rose-400">{error}</p>}

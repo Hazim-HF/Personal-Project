@@ -35,7 +35,8 @@ model User {
   updatedAt DateTime @updatedAt
 
   refreshTokens         RefreshToken[]
-  accounts              Account[]
+  passwordResetTokens   PasswordResetToken[]
+  accounts             Account[]
   categories            Category[]
   transactions          Transaction[]
   recurringTransactions RecurringTransaction[]
@@ -60,6 +61,21 @@ model RefreshToken {
 
   @@index([userId])
   @@map("refresh_tokens")
+}
+
+// Single-use "forgot password" links. Only a SHA-256 hash of the token is
+// stored, so a leaked database can't be used to reset anyone's password.
+model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  tokenHash String    @unique
+  userId    String    @db.Uuid
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@map("password_reset_tokens")
 }
 
 // ============================================================

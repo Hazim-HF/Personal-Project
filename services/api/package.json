@@ -12,6 +12,7 @@
     "prisma:deploy": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
     "prisma:seed": "node prisma/seed.js",
+    "reset-password": "node prisma/reset-password.js",
     "dev": "nodemon server.js"
   },
   "keywords": [],
